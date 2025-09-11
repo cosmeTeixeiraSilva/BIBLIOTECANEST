@@ -11,10 +11,33 @@ datasource db {
 }
 
 model Livros {
-  id        Int      @id @default(autoincrement())
-  titulo    String
-  autor     String
-  publicado DateTime
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  idLivro     Int           @id @default(autoincrement())
+  titulo      String
+  autor       String
+  publicado   DateTime
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  Emprestimos Emprestimos[]
+}
+
+model Usuarios {
+  idUser      Int           @id @default(autoincrement())
+  nome        String
+  email       String        @unique
+  senha       String
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  Emprestimos Emprestimos[]
+}
+
+model Emprestimos {
+  idEmprestimo Int       @id @default(autoincrement())
+  livroId      Int
+  usuarioId    Int
+  emprestado   DateTime
+  devolvido    DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  livro        Livros    @relation(fields: [livroId], references: [idLivro])
+  usuario      Usuarios  @relation(fields: [usuarioId], references: [idUser])
 }
